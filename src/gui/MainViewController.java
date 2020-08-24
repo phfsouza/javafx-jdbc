@@ -25,12 +25,11 @@ public class MainViewController implements Initializable {
 	private MenuItem menuItemSeller;
 	
 	@FXML
-	private MenuItem menuItemDepartament;
+	private MenuItem menuItemDepartment;
 	
 	@FXML
 	private MenuItem menuItemAbout;
-	
-	// EVENT HANDLER
+
 	@FXML
 	public void onMenuItemSellerAction() {
 		loadView("/gui/SellerList.fxml", (SellerListController controller) -> {
@@ -38,27 +37,22 @@ public class MainViewController implements Initializable {
 			controller.updateTableView();
 		});
 	}
-	
+
 	@FXML
-	public void onMenuItemDepartamentAction() {
+	public void onMenuItemDepartmentAction() {
 		loadView("/gui/DepartmentList.fxml", (DepartmentListController controller) -> {
 			controller.setDepartmentService(new DepartmentService());
 			controller.updateTableView();
 		});
-		
 	}
-	
 	
 	@FXML
 	public void onMenuItemAboutAction() {
 		loadView("/gui/About.fxml", x -> {});
-
 	}
-		
+	
 	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		
-		
+	public void initialize(URL uri, ResourceBundle rb) {
 	}
 	
 	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) {
@@ -80,6 +74,5 @@ public class MainViewController implements Initializable {
 		catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
-	}
-
+	}	
 }

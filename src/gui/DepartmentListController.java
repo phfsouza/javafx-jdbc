@@ -19,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -64,21 +63,19 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		createDialogForm(obj, "/gui/DepartmentForm.fxml", parentStage);
 	}
 
+	public void setDepartmentService(DepartmentService service) {
+		this.service = service;
+	}
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		initializeNodes();
 	}
 
-	public void setDepartmentService(DepartmentService service) {
-		this.service = service;
-	}
-
 	private void initializeNodes() {
-		// padrao do javaFX para iniciar o comportamento das colunas da tabela
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-		// Faz o tamanho da tabela acompanhar o tamanho da janela
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewDepartment.prefHeightProperty().bind(stage.heightProperty());
 	}
@@ -87,7 +84,6 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		if (service == null) {
 			throw new IllegalStateException("Service was null");
 		}
-
 		List<Department> list = service.findAll();
 		obsList = FXCollections.observableArrayList(list);
 		tableViewDepartment.setItems(obsList);
@@ -132,12 +128,10 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			@Override
 			protected void updateItem(Department obj, boolean empty) {
 				super.updateItem(obj, empty);
-
 				if (obj == null) {
 					setGraphic(null);
 					return;
 				}
-
 				setGraphic(button);
 				button.setOnAction(
 						event -> createDialogForm(obj, "/gui/DepartmentForm.fxml", Utils.currentStage(event)));
@@ -165,7 +159,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
 	private void removeEntity(Department obj) {
 		Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are you sure to delete?");
-		
+
 		if (result.get() == ButtonType.OK) {
 			if (service == null) {
 				throw new IllegalStateException("Service was null");
@@ -175,9 +169,8 @@ public class DepartmentListController implements Initializable, DataChangeListen
 				updateTableView();
 			}
 			catch (DbIntegrityException e) {
-				Alerts.showAlert("Error removing object", null, e.getMessage(), Alert.AlertType.ERROR);
+				Alerts.showAlert("Error removing object", null, e.getMessage(), AlertType.ERROR);
 			}
-			
 		}
 	}
 }
